@@ -1,4 +1,4 @@
-from ao_event_parser import Event_parser
+from src.ao_event_parser import Event_parser
 import pprint
 
 def main():

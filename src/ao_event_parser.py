@@ -11,6 +11,7 @@ class Event_parser:
         return json.loads(event_data.content)
         # return json.load(event_data.text)
 
+
     @staticmethod
     def parse_equip(equip: dict):
         res = {}
@@ -22,7 +23,8 @@ class Event_parser:
             # res[item_cell] = item_type
         
         return res
-    
+
+
     @staticmethod
     def parse_event_info(data):
         pricipant_data = {
@@ -35,9 +37,6 @@ class Event_parser:
 
         return pricipant_data
 
-
-
-            
 
     @staticmethod
     def parse_player_data(player_data: dict, pricipant_type):
@@ -57,4 +56,3 @@ class Event_parser:
         }
 
         return pricipant_data
-    
