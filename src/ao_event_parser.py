@@ -3,6 +3,13 @@ import json
 
 class Event_parser:
     @staticmethod
+    def get_recent_events(limit: int = 10, offset: int = 0):
+        url = f"https://gameinfo.albiononline.com/api/gameinfo/events?limit={limit}&offset={offset}"
+        events = requests.get(url)
+
+        return json.loads(events.content)
+
+    @staticmethod
     def get_event_data(event_id: int):
         url = f"https://gameinfo.albiononline.com/api/gameinfo/events/{event_id}"
 
