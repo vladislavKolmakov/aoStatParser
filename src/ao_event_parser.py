@@ -1,13 +1,22 @@
+from src.dao import EventDAO, PlayerDAO
+
 import requests
 import json
 
 class Event_parser:
+    @staticmethod
+    async def event_exist(event_id):
+        is_exist = await EventDAO.find_one_or_none(event_id = event_id)
+        return is_exist
+
+
     @staticmethod
     def get_recent_events(limit: int = 10, offset: int = 0):
         url = f"https://gameinfo.albiononline.com/api/gameinfo/events?limit={limit}&offset={offset}"
         events = requests.get(url)
 
         return json.loads(events.content)
+
 
     @staticmethod
     def get_event_data(event_id: int):
