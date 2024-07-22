@@ -1,3 +1,4 @@
+from datetime import datetime
 from src.dao import EventDAO, PlayerDAO
 
 import requests
@@ -6,12 +7,12 @@ import json
 class Event_parser:
     @staticmethod
     async def event_exist(event_id):
-        is_exist = await EventDAO.find_one_or_none(event_id = event_id)
+        is_exist = await EventDAO.insert_if_not_existsa(event_id = event_id)
         return is_exist
 
 
     @staticmethod
-    def get_recent_events(limit: int = 10, offset: int = 0):
+    def get_recent_events(limit: int = 50, offset: int = 0):
         url = f"https://gameinfo.albiononline.com/api/gameinfo/events?limit={limit}&offset={offset}"
         events = requests.get(url)
 
@@ -55,6 +56,19 @@ class Event_parser:
 
 
     @staticmethod
+    def prepare_date(date: str):
+        formatted_date = date.rstrip('Z')[:26]
+
+        # Преобразуем строку в объект datetime
+        dt_object = datetime.fromisoformat(formatted_date)
+
+        # Преобразуем объект datetime в строку в нужном формате для PostgreSQL
+        postgres_date = dt_object.strftime('%Y-%m-%d %H:%M:%S.%f')
+
+        return dt_object
+
+
+    @staticmethod
     def parse_player_data(player_data: dict, pricipant_type):
         if pricipant_type == 'killer':
             pricipant = player_data['Killer']
@@ -63,7 +77,6 @@ class Event_parser:
 
         pricipant_data = {
             'average_itemPower': pricipant['AverageItemPower'],
-            # 'equip': pricipant['Equipment'],
             'equip': Event_parser.parse_equip(pricipant['Equipment']),
             'name': pricipant['Name'],
             'guild_name': pricipant['GuildName'],
