@@ -10,4 +10,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+RUN chmod a+x /event_parser/docker/start.sh
+
 CMD ["python", "main.py"]
