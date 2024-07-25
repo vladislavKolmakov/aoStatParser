@@ -11,7 +11,10 @@ def main():
     mock_data = json.loads(mock_data)
 
     while True:
-        recent_events = Event_parser.get_recent_events()
+        try:
+            recent_events = Event_parser.get_recent_events()
+        except Exception:
+            print(Exception)
         for event in recent_events:
             
             event_info = {
